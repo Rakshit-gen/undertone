@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Sky } from "@/components/Sky";
 import { Studio } from "@/components/Studio";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { MoodMark } from "@/components/MoodMark";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -10,7 +11,7 @@ export default function Home() {
       <Sky />
       <div className={styles.page}>
         <header className={styles.header}>
-          <Link href="/" className={styles.mark}>Undertone</Link>
+          <Link href="/" className={styles.mark}><MoodMark />Undertone</Link>
           <ThemeToggle />
         </header>
 
