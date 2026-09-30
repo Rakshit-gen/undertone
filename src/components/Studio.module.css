@@ -91,3 +91,18 @@
   background: var(--surface);
   color: var(--foreground);
 }
+
+/* The writing sheet wakes up when you're in it. */
+.sheet { transition: border-color .3s ease, translate .4s cubic-bezier(.22, 1, .36, 1); }
+.sheet:focus-within { border-color: var(--border-strong); translate: 0 -2px; }
+
+/* Sample links preview their weather and wiggle it on hover. */
+.samples button { display: inline-flex; align-items: center; gap: 6px; }
+.samples button[data-current] { text-decoration-color: var(--accent); }
+.sampleIcon { width: 20px; height: 20px; transition: rotate .3s ease, scale .3s ease; }
+.samples button:hover .sampleIcon { rotate: -10deg; scale: 1.15; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet, .sheet:focus-within { transition: none; translate: none; }
+  .sampleIcon { transition: none; }
+}

@@ -139,7 +139,10 @@ export function Studio() {
         <div className={styles.samples}>
           <span>Try one:</span>
           {SAMPLES.map((s, i) => (
-            <button key={s.name} type="button" onClick={() => load(i)}>{s.name}</button>
+            <button key={s.name} type="button" onClick={() => load(i)} data-current={text.trim() === s.text.trim() || undefined}>
+              <WeatherIcon sky={forecast(EXAMPLES[s.text.trim()]).sky} className={styles.sampleIcon} />
+              {s.name}
+            </button>
           ))}
         </div>
       </div>
