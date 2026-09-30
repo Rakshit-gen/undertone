@@ -1,5 +1,6 @@
 import { Sky } from "@/components/Sky";
 import { Studio } from "@/components/Studio";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
       <div className={styles.page}>
         <header className={styles.header}>
           <a href="/" className={styles.mark}>Undertone</a>
+          <ThemeToggle />
         </header>
 
         <main>
