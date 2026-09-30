@@ -5,6 +5,7 @@ import { useReading } from "@/hooks/useReading";
 import { EXAMPLES } from "@/lib/examples";
 import { forecast } from "@/lib/forecast";
 import { applyView } from "@/lib/view";
+import { gust, mood } from "@/lib/mood";
 import { SAMPLES } from "@/lib/samples";
 import { GOALS, RECIPIENTS, type FlagKey, type Goal, type Recipient } from "@/lib/signals";
 import { Select } from "@/registry/components/select/select";
@@ -60,12 +61,16 @@ export function Studio() {
     setTrail([...trail, { id: (last?.id ?? 0) + 1, sky: weather.sky, text: current.text }].slice(-12));
   }
 
-  // The sky behind the page follows the forecast.
+  // The sky behind the page follows the reading: forecast sets the weather, warmth tints it, low clarity brings fog.
+  const warmth = current?.gauges.warmth ?? .5, clarity = current?.gauges.clarity ?? 1;
   useEffect(() => {
     const root = document.documentElement;
     if (weather) root.dataset.sky = weather.sky;
     else delete root.dataset.sky;
-  }, [weather?.sky]); // eslint-disable-line react-hooks/exhaustive-deps
+    root.style.setProperty("--mood-warm", String(Math.max(0, (warmth - .5) * 2)));
+    root.style.setProperty("--mood-fog", String(Math.max(0, (.6 - clarity) / .6)));
+    mood.storm = weather?.sky === "storm" ? 1 : weather?.sky === "showers" ? .4 : 0;
+  }, [weather?.sky, warmth, clarity]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const lead = text.length - text.trimStart().length;
   const flagged = current?.sentences.filter((s) => s.flags.length) ?? [];
@@ -104,6 +109,7 @@ export function Studio() {
     setGoal(s.goal);
     setText(s.text);
     setDismissed(new Set());
+    gust(2);
   }
 
   return (
@@ -115,7 +121,7 @@ export function Studio() {
         </div>
 
         <div className={styles.sheet}>
-          <Editor value={text} onChange={setText} result={current} active={active} textarea={textarea} onCaret={setCaret} onKeyDown={onEditorKey} />
+          <Editor value={text} onChange={(v) => { setText(v); gust(); }} result={current} active={active} textarea={textarea} onCaret={setCaret} onKeyDown={onEditorKey} />
           <div className={styles.foot}>
             <span className={styles.status} aria-live="polite">
               {example ? <><Badge tone="info" size="sm">Example</Badge> Hand-written reading. Edit the text for a live one.</>
