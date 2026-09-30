@@ -1,28 +1,26 @@
+/*
+ * Mood variables set on <html> by the studio:
+ *   --mood-warm   0..1  tints the sky toward dawn
+ *   --mood-fog    0..1  low clarity rolls fog in
+ */
 .sky {
   position: fixed;
   inset: 0;
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
-  background: var(--sky);
-  transition: background-color 1.2s ease;
+  background: color-mix(in oklab, var(--sky-now), var(--sky-warm) calc(var(--mood-warm, 0) * 45%));
+  transition: background-color 1.6s ease;
+  --sky-now: var(--sky);
 }
 
-.cloud {
-  position: absolute;
-  height: auto;
-  animation: drift linear infinite;
-  transition: opacity 1.2s ease, scale 1.2s cubic-bezier(.22, 1, .36, 1);
-}
+.cloud { position: absolute; left: 0; will-change: transform; transition: opacity 1.4s ease, filter 1.4s ease; }
+.cloud svg { display: block; width: 100%; height: auto; overflow: visible; }
 
-.a { width: 260px; top: 7%; left: -4%; animation-duration: 140s; }
-.b { width: 180px; top: 22%; right: 6%; animation-duration: 180s; animation-delay: -60s; opacity: .85; }
-.c { width: 340px; bottom: 10%; left: 12%; animation-duration: 220s; animation-delay: -30s; opacity: .7; }
-.d { width: 140px; bottom: 30%; right: -2%; animation-duration: 160s; animation-delay: -90s; opacity: .6; }
-/* The fifth cloud only rolls in when the weather turns. */
-.e { width: 420px; top: -40px; left: 38%; opacity: 0; scale: .8; animation-duration: 120s; animation-delay: -20s; }
+/* Each puff swells on its own beat, so the outline keeps shifting like a real cloud. */
+.puff { transform-box: fill-box; transform-origin: center; animation: swell 6s ease-in-out infinite; }
+@keyframes swell { 50% { scale: 1.06; } }
 
-/* Sun: hidden until the forecast is clear. */
 .sun {
   position: absolute;
   top: 6%;
@@ -30,15 +28,37 @@
   width: 120px;
   height: 120px;
   opacity: 0;
-  translate: 0 40px;
-  transition: opacity 1s ease, translate 1.2s cubic-bezier(.22, 1, .36, 1);
+  translate: 0 60px;
+  transition: opacity 1.4s ease, translate 1.6s cubic-bezier(.22, 1, .36, 1);
 }
 .sun svg { width: 100%; height: 100%; fill: #f3c34b; }
 .rays { transform-origin: 50px 50px; animation: spin 60s linear infinite; }
+.sun circle { transform-origin: 50px 50px; animation: pulse 5s ease-in-out infinite; }
+@keyframes pulse { 50% { scale: 1.05; } }
 
 .moon { display: none; }
 
-.rain { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; }
+/* Birds cross only a clear or partly cloudy sky. */
+.birds { position: absolute; inset: 0; opacity: 0; transition: opacity 2s ease; }
+.bird { position: absolute; left: 0; width: 22px; height: 10px; animation: fly 21s linear infinite; }
+.wing { fill: none; stroke: var(--text-secondary); stroke-width: 1.6; stroke-linecap: round; transform-origin: 12px 6px; animation: flap .6s ease-in-out infinite alternate; }
+@keyframes fly {
+  from { translate: -40px 0; }
+  50% { translate: 55vw -30px; }
+  to { translate: 110vw 10px; }
+}
+@keyframes flap { to { scale: 1 .45; } }
+
+/* Fog is a few flat bands that slide past each other. No gradients. */
+.fog { position: absolute; inset: 0; opacity: calc(var(--mood-fog, 0) * .8); transition: opacity 1.6s ease; z-index: 11; }
+.fog i { position: absolute; left: -10%; height: 38px; border-radius: 19px; background: var(--fog); opacity: .55; animation: slide 30s ease-in-out infinite alternate; }
+.fog i:nth-child(1) { bottom: 8%; width: 70%; }
+.fog i:nth-child(2) { bottom: 16%; width: 55%; left: 40%; animation-duration: 38s; animation-direction: alternate-reverse; }
+.fog i:nth-child(3) { bottom: 26%; width: 40%; left: 10%; height: 26px; animation-duration: 44s; }
+.fog i:nth-child(4) { bottom: 3%; width: 60%; left: 50%; height: 30px; animation-duration: 34s; animation-direction: alternate-reverse; }
+@keyframes slide { to { translate: 12vw 0; } }
+
+.rain { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; z-index: 11; }
 .rain i {
   position: absolute;
   top: -10%;
@@ -51,27 +71,26 @@
   animation: fall linear infinite;
 }
 
-.flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+.flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 12; }
 
 /* Weather states */
 :global(:root[data-sky="clear"]) .sun { opacity: 1; translate: 0 0; }
-:global(:root[data-sky="partly"]) .sun { opacity: .9; translate: 0 18px; }
+:global(:root[data-sky="partly"]) .sun { opacity: .9; translate: 0 22px; }
+:global(:root[data-sky="clear"]) .birds,
+:global(:root[data-sky="partly"]) .birds { opacity: 1; }
 
 :global(:root[data-sky="overcast"]) .sky,
-:global(:root[data-sky="showers"]) .sky { background: var(--sky-overcast); }
-:global(:root[data-sky="storm"]) .sky { background: var(--sky-storm); }
+:global(:root[data-sky="showers"]) .sky { --sky-now: var(--sky-overcast); }
+:global(:root[data-sky="storm"]) .sky { --sky-now: var(--sky-storm); }
+:global(:root[data-sky="storm"]) .cloud { --cloud: var(--cloud-storm); --cloud-shade: var(--cloud-storm-shade); }
 
-:global(:root[data-sky="overcast"]) .e,
-:global(:root[data-sky="showers"]) .e,
-:global(:root[data-sky="storm"]) .e { opacity: .9; scale: 1; }
-:global(:root[data-sky="storm"]) .cloud { --cloud: var(--cloud-storm); }
-
-:global(:root[data-sky="showers"]) .rain { opacity: .7; }
+:global(:root[data-sky="showers"]) .rain { opacity: .6; }
 :global(:root[data-sky="storm"]) .rain { opacity: 1; }
 :global(:root[data-sky="storm"]) .flash { animation: flash 7s ease-out infinite; }
 
-:global(:root[data-theme="dark"]) .cloud { opacity: .55; }
-:global(:root[data-theme="dark"]) .sun { display: none; }
+:global(:root[data-theme="dark"]) .cloud { filter: brightness(.9); }
+:global(:root[data-theme="dark"]) .sun,
+:global(:root[data-theme="dark"]) .birds { display: none; }
 :global(:root[data-theme="dark"]) .moon {
   display: block;
   position: absolute;
@@ -82,12 +101,9 @@
   border-radius: 50%;
   background: #e9edf2;
   box-shadow: inset -12px -4px 0 0 #c9d2dc;
+  animation: pulse 8s ease-in-out infinite;
 }
 
-@keyframes drift {
-  0%, 100% { translate: 0 0; }
-  50% { translate: 48px 0; }
-}
 @keyframes spin { to { rotate: 360deg; } }
 @keyframes fall {
   from { translate: 0 0; }
@@ -101,7 +117,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cloud, .rays, .rain i { animation: none; }
-  .rain i { display: none; }
+  .puff, .rays, .sun circle, .rain i, .bird, .wing, .moon, .fog i { animation: none; }
+  .rain i, .birds { display: none; }
   :global(:root[data-sky="storm"]) .flash { animation: none; }
 }
