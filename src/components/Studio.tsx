@@ -161,6 +161,12 @@ export function Studio() {
             <WeatherIcon sky="partly" className={styles.emptyIcon} />
             <h2>The forecast shows up here</h2>
             <p>Undertone reads each sentence the way the other person will and tells you where it might land wrong. It doesn&apos;t rewrite anything.</p>
+            <ul className={styles.how}>
+              <li>Click a note to jump to its sentence.</li>
+              <li><kbd>Alt</kbd> <kbd>↑</kbd> <kbd>↓</kbd> hops between marked lines while you type.</li>
+              <li>Drag the sensitivity to see quieter signals.</li>
+              <li>Every version leaves a sky on the trail. Click one to go back.</li>
+            </ul>
           </div>
         )}
       </aside>
