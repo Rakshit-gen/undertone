@@ -20,6 +20,7 @@ import { Notes } from "./Notes";
 import { STOPS, Tune } from "./Tune";
 import { Trail, type Stop } from "./Trail";
 import { WeatherIcon } from "./WeatherIcon";
+import { Dots } from "./Dots";
 import panel from "./Panel.module.css";
 import styles from "./Studio.module.css";
 
@@ -118,7 +119,7 @@ export function Studio() {
           <div className={styles.foot}>
             <span className={styles.status} aria-live="polite">
               {example ? <><Badge tone="info" size="sm">Example</Badge> Hand-written reading. Edit the text for a live one.</>
-                : status === "reading" ? "Reading…"
+                : status === "reading" ? <Dots label="Reading" />
                 : current ? <>Read by Jev in <b>{current.ms} ms</b></>
                 : text ? "" : "Start typing. It reads as you go."}
             </span>
