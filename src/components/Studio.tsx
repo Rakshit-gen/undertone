@@ -6,7 +6,7 @@ import { EXAMPLES } from "@/lib/examples";
 import { forecast } from "@/lib/forecast";
 import { applyView } from "@/lib/view";
 import { SAMPLES } from "@/lib/samples";
-import { FLAG_AT, GOALS, RECIPIENTS, type FlagKey, type Goal, type Recipient } from "@/lib/signals";
+import { GOALS, RECIPIENTS, type FlagKey, type Goal, type Recipient } from "@/lib/signals";
 import { Select } from "@/registry/components/select/select";
 import { CopyButton } from "@/registry/components/copy-button/copy-button";
 import { Skeleton } from "@/registry/components/skeleton/skeleton";
@@ -17,6 +17,7 @@ import { Gauges } from "./Gauges";
 import { Feel } from "./Feel";
 import { Checks } from "./Checks";
 import { Notes } from "./Notes";
+import { STOPS, Tune } from "./Tune";
 import { WeatherIcon } from "./WeatherIcon";
 import panel from "./Panel.module.css";
 import styles from "./Studio.module.css";
@@ -36,7 +37,8 @@ export function Studio() {
   const [text, setText] = useState("");
   const [hover, setHover] = useState<string | null>(null);
   const [caret, setCaret] = useState(-1);
-  const [threshold, setThreshold] = useState(FLAG_AT);
+  const [stop, setStop] = useState(2);
+  const threshold = STOPS[stop];
   const [hidden, setHidden] = useState<ReadonlySet<FlagKey>>(new Set());
   const [dismissed, setDismissed] = useState<ReadonlySet<string>>(new Set());
   const textarea = useRef<HTMLTextAreaElement>(null);
@@ -127,6 +129,7 @@ export function Studio() {
           <>
             <ForecastCard forecast={forecast(current)} />
             <Notes sentences={current.sentences} active={active} onActive={setHover} onPick={pick} onDismiss={dismiss} dismissedCount={dismissed.size} onRestore={() => setDismissed(new Set())} />
+            <Tune stop={stop} onStop={setStop} hidden={hidden} onHidden={setHidden} />
             <Gauges gauges={current.gauges} />
             <Feel feel={current.feel} reader={RECIPIENTS[recipient]} />
             <Checks checks={current.checks} />
