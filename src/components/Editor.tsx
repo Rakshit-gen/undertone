@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useRef, type ReactNode, type RefObject } from "react";
 import type { Result } from "@/hooks/useReading";
 import { FLAGS } from "@/lib/signals";
 import styles from "./Editor.module.css";
@@ -10,13 +10,17 @@ type Props = {
   onChange: (v: string) => void;
   result: Result | null;
   active: string | null;
+  /** Called with the caret offset whenever it moves, so the page can follow the sentence being edited. */
+  onCaret?: (offset: number) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  textarea?: RefObject<HTMLTextAreaElement | null>;
 };
 
 /**
  * A plain textarea over a mirror of the same text. The mirror draws the underlines,
  * so typing, selection, undo and spellcheck stay the browser's own.
  */
-export function Editor({ value, onChange, result, active }: Props) {
+export function Editor({ value, onChange, result, active, onCaret, onKeyDown, textarea }: Props) {
   const mirror = useRef<HTMLDivElement>(null);
   const lead = value.length - value.trimStart().length;
   const current = result && result.text === value.trim() ? result : null;
@@ -45,7 +49,10 @@ export function Editor({ value, onChange, result, active }: Props) {
       <textarea
         className={styles.field}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        ref={textarea}
+        onChange={(e) => { onChange(e.target.value); onCaret?.(e.target.selectionStart); }}
+        onSelect={(e) => onCaret?.(e.currentTarget.selectionStart)}
+        onKeyDown={onKeyDown}
         onScroll={(e) => { if (mirror.current) mirror.current.scrollTop = e.currentTarget.scrollTop; }}
         placeholder="Write or paste the message you're about to send."
         aria-label="Your message"
