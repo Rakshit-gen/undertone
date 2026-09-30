@@ -1,0 +1,33 @@
+.list { display: grid; gap: 18px; }
+
+.row { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: start; }
+.row dt { font-size: var(--text-sm); padding-top: 1px; }
+.row dd { margin: 0; display: grid; gap: 6px; }
+
+.value { font-size: var(--text-sm); color: var(--foreground); font-weight: 500; }
+
+.scale { display: grid; gap: 6px; }
+.ends { order: 2; display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--text-muted); }
+
+.track {
+  position: relative;
+  height: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.track i { width: 1px; height: 6px; background: var(--border-strong); align-self: flex-end; }
+.track b {
+  position: absolute;
+  bottom: -5px;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--paper);
+  transition: left .4s cubic-bezier(.22, 1, .36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) { .track b { transition: none; } }
