@@ -5,7 +5,8 @@ import type { Context } from "@/lib/questions";
 import type { Reading } from "@/lib/reading";
 import type { ReadError } from "@/app/api/read/route";
 
-export type Result = Reading & { ms: number; model: string };
+/** `text` is the exact (trimmed) message the reading belongs to, so offsets are never drawn over newer text. */
+export type Result = Reading & { ms: number; model: string; text: string };
 export type Status = "idle" | "reading" | "done" | "error";
 
 const DEBOUNCE = 550;
@@ -40,8 +41,9 @@ export function useReading(message: string, ctx: Context) {
         });
         const json = await res.json().catch(() => ({ error: "unavailable" }));
         if (!res.ok) { setError(json.error ?? "unavailable"); setStatus("error"); return; }
-        cache.current.set(key, json);
-        setResult(json);
+        const next = { ...json, text };
+        cache.current.set(key, next);
+        setResult(next);
         setError(null);
         setStatus("done");
       } catch {
@@ -52,7 +54,5 @@ export function useReading(message: string, ctx: Context) {
     return () => { clearTimeout(timer); ctl.abort(); };
   }, [message, ctx.recipient, ctx.goal]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /** Offsets from the last reading only line up with the text that produced them. */
-  const fresh = result !== null && status === "done";
-  return { result, status, error, fresh };
+  return { result, status, error };
 }
