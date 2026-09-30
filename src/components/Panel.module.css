@@ -1,0 +1,36 @@
+/* Shared styles for the reading column: one bordered sheet, sections split by hairlines. */
+.panel {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-surface);
+  overflow: hidden;
+}
+
+.section {
+  padding: 20px 24px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.heading {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.forecast {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 16px;
+  align-items: start;
+  padding: 24px;
+}
+.weather { width: 52px; height: 52px; }
+.title {
+  font-family: var(--font-serif-face);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -.01em;
+}
+.line { margin-top: 6px; color: var(--text-secondary); font-size: var(--text-sm); text-wrap: pretty; }
