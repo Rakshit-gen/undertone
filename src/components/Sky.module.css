@@ -5,22 +5,73 @@
   overflow: hidden;
   pointer-events: none;
   background: var(--sky);
+  transition: background-color 1.2s ease;
 }
 
 .cloud {
   position: absolute;
   height: auto;
   animation: drift linear infinite;
+  transition: opacity 1.2s ease, scale 1.2s cubic-bezier(.22, 1, .36, 1);
 }
 
 .a { width: 260px; top: 7%; left: -4%; animation-duration: 140s; }
 .b { width: 180px; top: 22%; right: 6%; animation-duration: 180s; animation-delay: -60s; opacity: .85; }
 .c { width: 340px; bottom: 10%; left: 12%; animation-duration: 220s; animation-delay: -30s; opacity: .7; }
 .d { width: 140px; bottom: 30%; right: -2%; animation-duration: 160s; animation-delay: -90s; opacity: .6; }
+/* The fifth cloud only rolls in when the weather turns. */
+.e { width: 420px; top: -40px; left: 38%; opacity: 0; scale: .8; animation-duration: 120s; animation-delay: -20s; }
+
+/* Sun: hidden until the forecast is clear. */
+.sun {
+  position: absolute;
+  top: 6%;
+  right: 12%;
+  width: 120px;
+  height: 120px;
+  opacity: 0;
+  translate: 0 40px;
+  transition: opacity 1s ease, translate 1.2s cubic-bezier(.22, 1, .36, 1);
+}
+.sun svg { width: 100%; height: 100%; fill: #f3c34b; }
+.rays { transform-origin: 50px 50px; animation: spin 60s linear infinite; }
 
 .moon { display: none; }
 
+.rain { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; }
+.rain i {
+  position: absolute;
+  top: -10%;
+  width: 1.5px;
+  height: 56px;
+  border-radius: 1px;
+  background: var(--mist);
+  opacity: .45;
+  rotate: 12deg;
+  animation: fall linear infinite;
+}
+
+.flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+
+/* Weather states */
+:global(:root[data-sky="clear"]) .sun { opacity: 1; translate: 0 0; }
+:global(:root[data-sky="partly"]) .sun { opacity: .9; translate: 0 18px; }
+
+:global(:root[data-sky="overcast"]) .sky,
+:global(:root[data-sky="showers"]) .sky { background: var(--sky-overcast); }
+:global(:root[data-sky="storm"]) .sky { background: var(--sky-storm); }
+
+:global(:root[data-sky="overcast"]) .e,
+:global(:root[data-sky="showers"]) .e,
+:global(:root[data-sky="storm"]) .e { opacity: .9; scale: 1; }
+:global(:root[data-sky="storm"]) .cloud { --cloud: var(--cloud-storm); }
+
+:global(:root[data-sky="showers"]) .rain { opacity: .7; }
+:global(:root[data-sky="storm"]) .rain { opacity: 1; }
+:global(:root[data-sky="storm"]) .flash { animation: flash 7s ease-out infinite; }
+
 :global(:root[data-theme="dark"]) .cloud { opacity: .55; }
+:global(:root[data-theme="dark"]) .sun { display: none; }
 :global(:root[data-theme="dark"]) .moon {
   display: block;
   position: absolute;
@@ -37,7 +88,20 @@
   0%, 100% { translate: 0 0; }
   50% { translate: 48px 0; }
 }
+@keyframes spin { to { rotate: 360deg; } }
+@keyframes fall {
+  from { translate: 0 0; }
+  to { translate: -24vh 120vh; }
+}
+@keyframes flash {
+  0%, 88%, 92%, 100% { opacity: 0; }
+  89% { opacity: .35; }
+  90% { opacity: .05; }
+  91% { opacity: .22; }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .cloud { animation: none; }
+  .cloud, .rays, .rain i { animation: none; }
+  .rain i { display: none; }
+  :global(:root[data-sky="storm"]) .flash { animation: none; }
 }

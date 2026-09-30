@@ -31,6 +31,9 @@ a { color: inherit; }
   --storm: #b4413a;
   --rain: #b7791f;
   --mist: #5b7fa6;
+  --sky-overcast: #cfd9e3;
+  --sky-storm: #aeb8c4;
+  --cloud-storm: #dfe5eb;
 }
 :root[data-theme="dark"] {
   --sky: #10161f;
@@ -41,6 +44,9 @@ a { color: inherit; }
   --storm: #f08a82;
   --rain: #f0bf6a;
   --mist: #8fb2d9;
+  --sky-overcast: #0d1219;
+  --sky-storm: #0a0e13;
+  --cloud-storm: #222c38;
 }
 body { background: var(--sky); }
 

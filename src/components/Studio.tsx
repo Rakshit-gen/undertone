@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useReading } from "@/hooks/useReading";
 import { EXAMPLES } from "@/lib/examples";
 import { forecast } from "@/lib/forecast";
@@ -48,6 +48,15 @@ export function Studio() {
   const { result, status, error } = useReading(example ? "" : text, { recipient, goal });
   const raw = example ?? (result && result.text === text.trim() ? result : null);
   const current = useMemo(() => raw && applyView(raw, { threshold, hidden, dismissed }), [raw, threshold, hidden, dismissed]);
+
+  const weather = current ? forecast(current) : null;
+
+  // The sky behind the page follows the forecast.
+  useEffect(() => {
+    const root = document.documentElement;
+    if (weather) root.dataset.sky = weather.sky;
+    else delete root.dataset.sky;
+  }, [weather?.sky]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const lead = text.length - text.trimStart().length;
   const flagged = current?.sentences.filter((s) => s.flags.length) ?? [];
@@ -127,7 +136,7 @@ export function Studio() {
           </div>
         ) : current ? (
           <>
-            <ForecastCard forecast={forecast(current)} />
+            <ForecastCard forecast={weather!} />
             <Notes sentences={current.sentences} active={active} onActive={setHover} onPick={pick} onDismiss={dismiss} dismissedCount={dismissed.size} onRestore={() => setDismissed(new Set())} />
             <Tune stop={stop} onStop={setStop} hidden={hidden} onHidden={setHidden} />
             <Gauges gauges={current.gauges} />
