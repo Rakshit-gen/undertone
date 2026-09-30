@@ -29,6 +29,9 @@
       "@/lib/motion-tokens": [
         "./lib/motion-tokens.ts"
       ],
+      "@/lib/use-copy-feedback": [
+        "./lib/use-copy-feedback.ts"
+      ],
       "@/*": [
         "./src/*"
       ]
