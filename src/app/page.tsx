@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Sky } from "@/components/Sky";
 import { Studio } from "@/components/Studio";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -9,7 +10,7 @@ export default function Home() {
       <Sky />
       <div className={styles.page}>
         <header className={styles.header}>
-          <a href="/" className={styles.mark}>Undertone</a>
+          <Link href="/" className={styles.mark}>Undertone</Link>
           <ThemeToggle />
         </header>
 
