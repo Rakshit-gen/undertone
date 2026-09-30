@@ -34,3 +34,13 @@
   letter-spacing: -.01em;
 }
 .line { margin-top: 6px; color: var(--text-secondary); font-size: var(--text-sm); text-wrap: pretty; }
+
+.weatherSlot { position: relative; width: 52px; height: 52px; }
+.weatherInner { position: absolute; inset: 0; display: block; }
+
+/* A gentle idle motion on the icon, so the forecast feels alive without asking for attention. */
+.forecast .weather { animation: bob 5s ease-in-out infinite; }
+.forecast[data-sky="storm"] .weather { animation: shake 4s ease-in-out infinite; }
+@keyframes bob { 50% { translate: 0 -3px; } }
+@keyframes shake { 0%, 90%, 100% { rotate: 0deg; } 92% { rotate: -4deg; } 94% { rotate: 4deg; } 96% { rotate: -2deg; } }
+@media (prefers-reduced-motion: reduce) { .forecast .weather, .forecast[data-sky="storm"] .weather { animation: none; } }
