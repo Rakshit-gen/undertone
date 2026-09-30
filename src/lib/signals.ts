@@ -26,13 +26,13 @@ export type Goal = keyof typeof GOALS;
 
 /** Asked of every sentence. `tone` sets how serious a hit is when drawn on the page. */
 export const FLAGS = {
-  passive: { label: "Passive-aggressive", tone: "storm", ask: "reads as passive-aggressive to the reader" },
-  blame: { label: "Blames the reader", tone: "storm", ask: "blames or accuses the reader" },
-  curt: { label: "Curt", tone: "storm", ask: "comes across as curt or dismissive" },
-  defensive: { label: "Defensive", tone: "rain", ask: "sounds defensive or self-justifying" },
-  apology: { label: "Over-apologetic", tone: "rain", ask: "apologises more than the situation needs" },
-  hedge: { label: "Hedged", tone: "cloud", ask: "is hedged or tentative enough to weaken the point" },
-  vague: { label: "Vague", tone: "cloud", ask: "is too vague for the reader to act on" },
+  passive: { label: "Passive-aggressive", tone: "storm", ask: "reads as passive-aggressive to the reader", tip: "Say the thing directly. If you're frustrated, name the problem, not the person." },
+  blame: { label: "Blames the reader", tone: "storm", ask: "blames or accuses the reader", tip: "Describe what happened and what you need next, without pointing at them." },
+  curt: { label: "Curt", tone: "storm", ask: "comes across as curt or dismissive", tip: "Add a word of context or thanks so it doesn't read as a brush-off." },
+  defensive: { label: "Defensive", tone: "rain", ask: "sounds defensive or self-justifying", tip: "Drop the justification. State the facts once and move to next steps." },
+  apology: { label: "Over-apologetic", tone: "rain", ask: "apologises more than the situation needs", tip: "One apology is enough. Replace the rest with what you'll do." },
+  hedge: { label: "Hedged", tone: "cloud", ask: "is hedged or tentative enough to weaken the point", tip: "Cut the softeners (just, maybe, I think) and say what you mean." },
+  vague: { label: "Vague", tone: "cloud", ask: "is too vague for the reader to act on", tip: "Add the specific: what, by when, and who." },
 } as const;
 export type FlagKey = keyof typeof FLAGS;
 export type Tone = (typeof FLAGS)[FlagKey]["tone"];
