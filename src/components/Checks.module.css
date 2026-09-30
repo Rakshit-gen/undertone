@@ -1,0 +1,6 @@
+.list { list-style: none; padding: 0; display: grid; gap: 8px; font-size: var(--text-sm); }
+.list li { display: flex; gap: 10px; align-items: center; }
+.list li[data-ok="true"] { color: var(--text-secondary); }
+.list li[data-ok="true"] svg { color: var(--success); }
+.list li[data-ok="false"] { color: var(--foreground); font-weight: 500; }
+.list li[data-ok="false"] svg { color: var(--storm); }
