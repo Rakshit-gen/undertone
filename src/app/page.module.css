@@ -1,0 +1,37 @@
+.page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+.mark {
+  font-family: var(--font-serif-face);
+  font-size: var(--text-xl);
+  font-style: italic;
+  text-decoration: none;
+  letter-spacing: -.01em;
+}
+
+.intro { max-width: 620px; margin: 40px 0 32px; }
+.intro h1 {
+  font-family: var(--font-serif-face);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 5vw, var(--text-4xl));
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  text-wrap: balance;
+}
+.intro p { margin-top: 14px; font-size: var(--text-lg); color: var(--text-secondary); text-wrap: pretty; }
+
+.footer { margin-top: 48px; font-size: var(--text-sm); color: var(--text-secondary); max-width: 560px; }
+
+@media (max-width: 640px) {
+  .page { padding: 0 16px 32px; }
+  .intro { margin: 16px 0 24px; }
+}
