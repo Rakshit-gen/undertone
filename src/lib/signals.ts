@@ -53,15 +53,15 @@ export type Feeling = keyof typeof FEELINGS;
 
 /** Whole-message checks. `want` is the answer a good message gives. `goals` limits a check to the goals it applies to. */
 export const CHECKS = {
-  ask: { label: "Makes a clear request", want: true, ask: "The message makes a clear request or states the next step", goals: ["ask", "followup", "feedback"] },
-  reason: { label: "Explains why", want: true, ask: "The message explains the reason behind the request or decision", goals: ["ask", "decline", "feedback", "apologise"] },
-  owns: { label: "Takes responsibility", want: true, ask: "The writer takes clear responsibility without making excuses", goals: ["apologise"] },
-  length: { label: "No longer than needed", want: true, ask: "The message is no longer than it needs to be for its purpose" },
-  close: { label: "Ends on good terms", want: true, ask: "The message ends in a way that invites a reply or leaves things on good terms" },
-  sarcasm: { label: "Free of sarcasm", want: false, ask: "The message uses sarcasm" },
-  ultimatum: { label: "No ultimatums", want: false, ask: "The message contains an ultimatum or a veiled threat" },
-  jargon: { label: "Plain language", want: false, ask: "The message relies on jargon or acronyms the reader may not know" },
-} as const satisfies Record<string, { label: string; want: boolean; ask: string; goals?: readonly Goal[] }>;
+  ask: { label: "Makes a clear request", want: true, ask: "The message makes a clear request or states the next step", fix: "End with the one thing you need, and by when.", goals: ["ask", "followup", "feedback"] },
+  reason: { label: "Explains why", want: true, ask: "The message explains the reason behind the request or decision", fix: "Add a sentence on why. People agree more easily when they see the reason.", goals: ["ask", "decline", "feedback", "apologise"] },
+  owns: { label: "Takes responsibility", want: true, ask: "The writer takes clear responsibility without making excuses", fix: "Say what went wrong in the first person, then what you'll do about it.", goals: ["apologise"] },
+  length: { label: "No longer than needed", want: true, ask: "The message is no longer than it needs to be for its purpose", fix: "Cut anything the reader doesn't need to act or understand." },
+  close: { label: "Ends on good terms", want: true, ask: "The message ends in a way that invites a reply or leaves things on good terms", fix: "Close with a thank you, an offer to help, or a question they can answer." },
+  sarcasm: { label: "Free of sarcasm", want: false, ask: "The message uses sarcasm", fix: "Say the literal thing. Sarcasm reads as contempt in writing." },
+  ultimatum: { label: "No ultimatums", want: false, ask: "The message contains an ultimatum or a veiled threat", fix: "Replace the 'or else' with what happens next and why it matters." },
+  jargon: { label: "Plain language", want: false, ask: "The message relies on jargon or acronyms the reader may not know", fix: "Spell out acronyms and swap insider terms for plain words." },
+} as const satisfies Record<string, { label: string; want: boolean; ask: string; fix: string; goals?: readonly Goal[] }>;
 export type CheckKey = keyof typeof CHECKS;
 
 /** A sentence is flagged once Jev puts the probability at or above this. People can move it with the sensitivity slider. */
