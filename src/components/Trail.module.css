@@ -1,0 +1,28 @@
+.trail { display: flex; align-items: center; gap: 12px; padding: 0 8px; min-height: 40px; }
+.label { font-size: var(--text-sm); color: var(--text-secondary); }
+.trail ol { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 2px; align-items: center; }
+.trail li { position: relative; }
+.trail li + li::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: 50%;
+  width: 4px;
+  height: 1px;
+  background: var(--border-strong);
+}
+.stop {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  transition: background-color .16s ease, border-color .16s ease, scale .16s ease;
+}
+.stop:hover { background: var(--paper); scale: 1.08; }
+.stop:active { scale: .94; }
+.stop[data-current] { background: var(--paper); border-color: var(--border); }
+.icon { width: 22px; height: 22px; }

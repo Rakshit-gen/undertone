@@ -18,6 +18,7 @@ import { Feel } from "./Feel";
 import { Checks } from "./Checks";
 import { Notes } from "./Notes";
 import { STOPS, Tune } from "./Tune";
+import { Trail, type Stop } from "./Trail";
 import { WeatherIcon } from "./WeatherIcon";
 import panel from "./Panel.module.css";
 import styles from "./Studio.module.css";
@@ -50,6 +51,13 @@ export function Studio() {
   const current = useMemo(() => raw && applyView(raw, { threshold, hidden, dismissed }), [raw, threshold, hidden, dismissed]);
 
   const weather = current ? forecast(current) : null;
+
+  // Each new reading leaves a stop on the trail. Set during render, guarded, so it never loops.
+  const [trail, setTrail] = useState<Stop[]>([]);
+  const last = trail[trail.length - 1];
+  if (weather && current && (!last || last.text !== current.text) && !trail.some((t) => t.text === current.text)) {
+    setTrail([...trail, { id: (last?.id ?? 0) + 1, sky: weather.sky, text: current.text }].slice(-12));
+  }
 
   // The sky behind the page follows the forecast.
   useEffect(() => {
@@ -118,6 +126,8 @@ export function Studio() {
             <CopyButton value={text} label="Copy" disabled={!text} />
           </div>
         </div>
+
+        <Trail stops={trail} current={text.trim()} onRestore={(t) => setText(t.text)} />
 
         <div className={styles.samples}>
           <span>Try one:</span>
