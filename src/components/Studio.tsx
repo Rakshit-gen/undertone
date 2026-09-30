@@ -137,7 +137,7 @@ export function Studio() {
         </div>
       </div>
 
-      <aside className={`${panel.panel} ${styles.right}`} aria-label="Reading">
+      <aside className={`${panel.panel} ${styles.right}`} aria-label="Reading" data-sky={weather?.sky}>
         {!example && status === "error" && error ? (
           <div className={styles.empty} role="alert">
             <WeatherIcon sky="overcast" className={styles.emptyIcon} />

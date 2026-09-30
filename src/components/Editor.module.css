@@ -59,3 +59,8 @@ textarea.field::placeholder { color: var(--text-muted); font-style: italic; }
 @media (max-width: 640px) {
   .field { font-size: 1.125rem; min-height: 240px; padding: 20px; }
 }
+
+/* New underlines ink in from nothing, so you see which lines just changed. */
+.mirror mark { animation: ink .6s ease both; }
+@keyframes ink { from { text-decoration-color: transparent; } }
+@media (prefers-reduced-motion: reduce) { .mirror mark { animation: none; } }
