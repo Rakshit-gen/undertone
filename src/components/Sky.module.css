@@ -1,0 +1,43 @@
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--sky);
+}
+
+.cloud {
+  position: absolute;
+  height: auto;
+  animation: drift linear infinite;
+}
+
+.a { width: 260px; top: 7%; left: -4%; animation-duration: 140s; }
+.b { width: 180px; top: 22%; right: 6%; animation-duration: 180s; animation-delay: -60s; opacity: .85; }
+.c { width: 340px; bottom: 10%; left: 12%; animation-duration: 220s; animation-delay: -30s; opacity: .7; }
+.d { width: 140px; bottom: 30%; right: -2%; animation-duration: 160s; animation-delay: -90s; opacity: .6; }
+
+.moon { display: none; }
+
+:global(:root[data-theme="dark"]) .cloud { opacity: .55; }
+:global(:root[data-theme="dark"]) .moon {
+  display: block;
+  position: absolute;
+  top: 9%;
+  right: 14%;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #e9edf2;
+  box-shadow: inset -12px -4px 0 0 #c9d2dc;
+}
+
+@keyframes drift {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 48px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloud { animation: none; }
+}

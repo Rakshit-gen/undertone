@@ -20,3 +20,26 @@ body {
 
 button, input, select, textarea { font: inherit; color: inherit; }
 a { color: inherit; }
+
+/* Sky palette. Flat fills only: the page reads as weather through shape, not gradients. */
+:root {
+  --sky: #dfeaf4;
+  --cloud: #ffffff;
+  --cloud-shade: #eef3f8;
+  --paper: #ffffff;
+  --ink-soft: #5d6b7a;
+  --storm: #b4413a;
+  --rain: #b7791f;
+  --mist: #5b7fa6;
+}
+:root[data-theme="dark"] {
+  --sky: #10161f;
+  --cloud: #1b2430;
+  --cloud-shade: #161e28;
+  --paper: #151b24;
+  --ink-soft: #95a3b3;
+  --storm: #f08a82;
+  --rain: #f0bf6a;
+  --mist: #8fb2d9;
+}
+body { background: var(--sky); }
