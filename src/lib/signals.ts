@@ -64,5 +64,7 @@ export const CHECKS = {
 } as const satisfies Record<string, { label: string; want: boolean; ask: string; goals?: readonly Goal[] }>;
 export type CheckKey = keyof typeof CHECKS;
 
-/** A sentence is flagged once Jev puts the probability at or above this. */
+/** A sentence is flagged once Jev puts the probability at or above this. People can move it with the sensitivity slider. */
 export const FLAG_AT = 0.6;
+/** The server keeps anything above this, so the slider can reveal weaker signals without asking Jev again. */
+export const FLAG_FLOOR = 0.3;

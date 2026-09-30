@@ -1,6 +1,6 @@
 import type { Sentence } from "./sentences";
 import { checkId, checksFor, FEEL_ID, flagId, gaugeId, MAX_SENTENCES, type Context } from "./questions";
-import { CHECKS, FEELINGS, FLAG_AT, FLAGS, GAUGES, type CheckKey, type Feeling, type FlagKey, type GaugeKey } from "./signals";
+import { CHECKS, FEELINGS, FLAG_FLOOR, FLAGS, GAUGES, type CheckKey, type Feeling, type FlagKey, type GaugeKey } from "./signals";
 
 type Answer =
   | { type: "boolean"; probability: number }
@@ -28,7 +28,7 @@ export function readAnswers(answers: Record<string, Answer | undefined>, sentenc
     ...s,
     flags: i >= MAX_SENTENCES ? [] : (Object.keys(FLAGS) as FlagKey[])
       .map((key) => ({ key, p: bool(flagId(s.id, key)) }))
-      .filter((f) => f.p >= FLAG_AT)
+      .filter((f) => f.p >= FLAG_FLOOR)
       .sort((a, b) => b.p - a.p),
   }));
 
